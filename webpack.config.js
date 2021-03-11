@@ -1,5 +1,6 @@
 const path = require('path');
 const VueLoaderPlugin = require('vue-loader/lib/plugin');
+const makeSourceMap = process.argv.indexOf('--srcmap') > -1;
 
 module.exports = {
     mode: 'production',
@@ -17,7 +18,8 @@ module.exports = {
                 test: /\.js$/,
                 use: [{loader: 'exports-loader'}, {loader: 'babel-loader'}],
                 include: [
-                    path.join(__dirname, 'src')
+                    path.join(__dirname, 'src'),
+                    path.join(__dirname, './node_modules/ip-regex/'),
                 ]
             },
             {
@@ -33,6 +35,7 @@ module.exports = {
     plugins: [
         new VueLoaderPlugin()
     ],
+    devtool: makeSourceMap ? 'source-map' : '',
     devServer: {
         filename: 'plugin-userbox-avatar.js',
         contentBase: path.join(__dirname, "dist"),
@@ -40,3 +43,4 @@ module.exports = {
         port: 9000
     }
 };
+
